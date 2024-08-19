@@ -1,5 +1,5 @@
-function log(msg) {
-  console.log(msg);
+function log(msg, ...args) {
+  console.log(msg, args);
   return 3;
 }
 

@@ -9,13 +9,33 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/card.js":
+/*!*********************!*\
+  !*** ./src/card.js ***!
+  \*********************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+eval("const { constants } = __webpack_require__(/*! ./constants.js */ \"./src/constants.js\")\r\n\r\n\r\nexports.Card = class Card {\r\n    #seed;\r\n    #value;\r\n    constructor(seed, value) {\r\n        this.#seed = seed;\r\n        this.#value = value == 'X' ? \"10\" : value;\r\n    }\r\n\r\n    getColor() {\r\n        return \"♥♦\".includes(this.#seed) ? constants.RED : constants.BLACK;\r\n    }\r\n\r\n    getValue() {\r\n        return this.value; // could cast to number?\r\n    }\r\n\r\n    getSeed() {\r\n        return this.#seed;\r\n    }\r\n\r\n    getCard() {\r\n        return this.#value + \"<br>\" + this.#seed;\r\n    }\r\n}\n\n//# sourceURL=webpack://my-webpack-project/./src/card.js?");
+
+/***/ }),
+
+/***/ "./src/constants.js":
+/*!**************************!*\
+  !*** ./src/constants.js ***!
+  \**************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+eval("exports.constants = {\r\n    BLACK: \"BLACK\",\r\n    RED: \"RED\",\r\n    SEEDS: \"♥♦♠♣\",\r\n    VALUES: \"A23456789XJQK\"\r\n}\n\n//# sourceURL=webpack://my-webpack-project/./src/constants.js?");
+
+/***/ }),
+
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const { log } = __webpack_require__(/*! ./logger.js */ \"./src/logger.js\")\nlog(\"Hello World!\");\nlog('hehehe13')\n\n//# sourceURL=webpack://my-webpack-project/./src/index.js?");
+eval("const { log } = __webpack_require__(/*! ./logger.js */ \"./src/logger.js\")\r\nconst { Card } = __webpack_require__(/*! ./card.js */ \"./src/card.js\")\r\nconst { constants } = __webpack_require__(/*! ./constants.js */ \"./src/constants.js\")\r\n\r\nlog(\"Hello World!\");\r\nlog('hehehe15');\r\n\r\ndocument.getElementsByTagName(\"body\")[0].innerHTML = \"<div id='game'></div>\";\r\n\r\nlet cards = [];\r\nfor (let seed of constants.SEEDS) {\r\n  for (let value of constants.VALUES) {\r\n    cards.push(new Card(seed, value));\r\n  }\r\n}\r\n\r\nfor (let card of cards) {\r\n  let cardDiv = document.createElement(\"div\");\r\n  cardDiv.classList.add(\"card\");\r\n  cardDiv.classList.add(card.getColor());\r\n  cardDiv.innerHTML = card.getCard();\r\n  cardDiv.addEventListener(\"click\", () => console.log(card));\r\n  document.getElementById(\"game\").appendChild(cardDiv);\r\n}\n\n//# sourceURL=webpack://my-webpack-project/./src/index.js?");
 
 /***/ }),
 
@@ -25,7 +45,7 @@ eval("const { log } = __webpack_require__(/*! ./logger.js */ \"./src/logger.js\"
   \***********************/
 /***/ ((__unused_webpack_module, exports) => {
 
-eval("function log(msg) {\r\n  console.log(msg);\r\n  return 3;\r\n}\r\n\r\nexports.log = log;\n\n//# sourceURL=webpack://my-webpack-project/./src/logger.js?");
+eval("function log(msg, ...args) {\r\n  console.log(msg, args);\r\n  return 3;\r\n}\r\n\r\nexports.log = log;\n\n//# sourceURL=webpack://my-webpack-project/./src/logger.js?");
 
 /***/ })
 
