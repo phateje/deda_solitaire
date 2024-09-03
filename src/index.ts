@@ -1,6 +1,6 @@
-const { log } = require("./logger.js")
-const { Card } = require("./card.js")
-const { constants } = require("./constants.js")
+const { log } = require("./logger.ts")
+const { Card } = require("./card.ts")
+const { constants } = require("./constants.ts")
 
 log("Hello World!");
 log('hehehe15');

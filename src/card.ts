@@ -1,10 +1,10 @@
-const { constants } = require("./constants.js")
+let { constants } = require("./constants.ts")
 
 
 exports.Card = class Card {
     #seed;
     #value;
-    constructor(seed, value) {
+    constructor(seed: string, value: string) {
         this.#seed = seed;
         this.#value = value == 'X' ? "10" : value;
     }
@@ -14,7 +14,7 @@ exports.Card = class Card {
     }
 
     getValue() {
-        return this.value; // could cast to number?
+        return this.#value; // could cast to number?
     }
 
     getSeed() {
