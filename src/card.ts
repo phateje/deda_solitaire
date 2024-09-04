@@ -2,8 +2,8 @@ let { constants } = require("./constants.ts")
 
 
 exports.Card = class Card {
-    #seed;
-    #value;
+    #seed: string;
+    #value: string;
     constructor(seed: string, value: string) {
         this.#seed = seed;
         this.#value = value == 'X' ? "10" : value;
@@ -13,15 +13,15 @@ exports.Card = class Card {
         return "♥♦".includes(this.#seed) ? constants.RED : constants.BLACK;
     }
 
-    getValue() {
+    getValue(): string {
         return this.#value; // could cast to number?
     }
 
-    getSeed() {
+    getSeed(): string {
         return this.#seed;
     }
 
-    getCard() {
+    getCard(): string { // could be another class
         return this.#value + "<br>" + this.#seed;
     }
 }
