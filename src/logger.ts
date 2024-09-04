@@ -1,4 +1,4 @@
-function log(msg, ...args) {
+function log(msg: string, ...args: any[]) {
   console.log(msg, args);
   return 3;
 }
