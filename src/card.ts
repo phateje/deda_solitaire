@@ -1,28 +1,53 @@
-let { constants } = require("./constants.ts")
-
+const { constants } = require("./constants.ts");
+const { Dom } = require("./dom");
 
 exports.Card = class Card {
-    private seed: string;
-    private value: string;
-    
-    constructor(seed: string, value: string) {
-        this.seed = seed;
-        this.value = value == 'X' ? "10" : value;
-    }
+  private seed: string;
+  private value: string;
+  private domElement: any;
 
-    getColor() {
-        return "♥♦".includes(this.seed) ? constants.RED : constants.BLACK;
-    }
+  constructor(seed: string, value: string) {
+    this.seed = seed;
+    this.value = value == "X" ? "10" : value;
+    this.setupDomElement();
+  }
 
-    getValue(): string {
-        return this.value; // could cast to number?
-    }
+  public getColor() {
+    return "♥♦".includes(this.seed) ? constants.RED : constants.BLACK;
+  }
 
-    getSeed(): string {
-        return this.seed;
-    }
+  public getValue(): string {
+    return this.value; // could cast to number?
+  }
 
-    getCard(): string { // could be another class
-        return this.value + "<br>" + this.seed;
+  public getSeed(): string {
+    return this.seed;
+  }
+
+  public getCard(): string {
+    // could be another class
+    return this.value + "<br>" + this.seed;
+  }
+
+  public getDomElement(): any {
+    return this.domElement;
+  }
+
+  private setupDomElement() {
+    this.domElement = Dom.createElement("div");
+    if (this.domElement) {
+      this.domElement.classList.add("card");
+      this.domElement.classList.add(this.getColor());
+      this.domElement.innerHTML = this.getCard();
+      this.domElement.addEventListener("click", () => console.log(this));
+      this.domElement.addEventListener("mouseover", (event: any) => {
+        event.target.style.backgroundColor = "#aaa";
+        console.log(event.target.style);
+      });
+      this.domElement.addEventListener("mouseleave", (event: any) => {
+        event.target.style.backgroundColor = "";
+        console.log(event.target.style);
+      });
     }
-}
+  }
+};

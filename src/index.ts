@@ -1,24 +1,33 @@
-const { log } = require("./logger.ts")
-const { Card } = require("./card.ts")
-const { constants } = require("./constants.ts")
+const { log } = require("./logger.ts");
+const { Card } = require("./card.ts");
+const { Stack } = require("./stack.ts");
+const { constants } = require("./constants.ts");
+const { Dom } = require("./dom");
 
 log("Hello World!");
-log('hehehe15');
 
-document.getElementsByTagName("body")[0].innerHTML = "<div id='game'></div>";
+Dom.getElementsByTagName("body")[0].innerHTML = "<div id='game'></div>";
 
 let cards = [];
+let i = 0;
+let currStack = new Stack();
+let stacks = [currStack];
 for (let seed of constants.SEEDS) {
   for (let value of constants.VALUES) {
-    cards.push(new Card(seed, value));
+    let newCard = new Card(seed, value);
+    cards.push(newCard);
+    i++;
+    currStack.stackTopCard(newCard);
+    if (i == 3) {
+      i = 0;
+      currStack = new Stack();
+      stacks.push(currStack);
+    }
   }
 }
 
-for (let card of cards) {
-  let cardDiv = document.createElement("div");
-  cardDiv.classList.add("card");
-  cardDiv.classList.add(card.getColor());
-  cardDiv.innerHTML = card.getCard();
-  cardDiv.addEventListener("click", () => console.log(card));
-  document.getElementById("game").appendChild(cardDiv);
+for (let stack of stacks) {
+  console.log(stack);
+
+  Dom.getElementById("game").appendChild(stack.getDomElement());
 }

@@ -14,9 +14,9 @@
 /*!*********************!*\
   !*** ./src/card.ts ***!
   \*********************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("\nvar __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {\n    if (kind === \"m\") throw new TypeError(\"Private method is not writable\");\n    if (kind === \"a\" && !f) throw new TypeError(\"Private accessor was defined without a setter\");\n    if (typeof state === \"function\" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError(\"Cannot write private member to an object whose class did not declare it\");\n    return (kind === \"a\" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;\n};\nvar __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {\n    if (kind === \"a\" && !f) throw new TypeError(\"Private accessor was defined without a getter\");\n    if (typeof state === \"function\" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError(\"Cannot read private member from an object whose class did not declare it\");\n    return kind === \"m\" ? f : kind === \"a\" ? f.call(receiver) : f ? f.value : state.get(receiver);\n};\nvar _Card_seed, _Card_value, _a;\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nlet { constants } = __webpack_require__(/*! ./constants.ts */ \"./src/constants.ts\");\nexports.Card = (_a = class Card {\n        constructor(seed, value) {\n            _Card_seed.set(this, void 0);\n            _Card_value.set(this, void 0);\n            __classPrivateFieldSet(this, _Card_seed, seed, \"f\");\n            __classPrivateFieldSet(this, _Card_value, value == 'X' ? \"10\" : value, \"f\");\n        }\n        getColor() {\n            return \"♥♦\".includes(__classPrivateFieldGet(this, _Card_seed, \"f\")) ? constants.RED : constants.BLACK;\n        }\n        getValue() {\n            return __classPrivateFieldGet(this, _Card_value, \"f\"); // could cast to number?\n        }\n        getSeed() {\n            return __classPrivateFieldGet(this, _Card_seed, \"f\");\n        }\n        getCard() {\n            return __classPrivateFieldGet(this, _Card_value, \"f\") + \"<br>\" + __classPrivateFieldGet(this, _Card_seed, \"f\");\n        }\n    },\n    _Card_seed = new WeakMap(),\n    _Card_value = new WeakMap(),\n    _a);\n\n\n//# sourceURL=webpack://my-webpack-project/./src/card.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst { constants } = __webpack_require__(/*! ./constants.ts */ \"./src/constants.ts\");\nconst { Dom } = __webpack_require__(/*! ./dom */ \"./src/dom.ts\");\nexports.Card = class Card {\n    constructor(seed, value) {\n        this.seed = seed;\n        this.value = value == \"X\" ? \"10\" : value;\n        this.setupDomElement();\n    }\n    getColor() {\n        return \"♥♦\".includes(this.seed) ? constants.RED : constants.BLACK;\n    }\n    getValue() {\n        return this.value; // could cast to number?\n    }\n    getSeed() {\n        return this.seed;\n    }\n    getCard() {\n        // could be another class\n        return this.value + \"<br>\" + this.seed;\n    }\n    getDomElement() {\n        return this.domElement;\n    }\n    setupDomElement() {\n        this.domElement = Dom.createElement(\"div\");\n        if (this.domElement) {\n            this.domElement.classList.add(\"card\");\n            this.domElement.classList.add(this.getColor());\n            this.domElement.innerHTML = this.getCard();\n            this.domElement.addEventListener(\"click\", () => console.log(this));\n            this.domElement.addEventListener(\"mouseover\", (event) => {\n                event.target.style.backgroundColor = \"#aaa\";\n                console.log(event.target.style);\n            });\n            this.domElement.addEventListener(\"mouseleave\", (event) => {\n                event.target.style.backgroundColor = \"\";\n                console.log(event.target.style);\n            });\n        }\n    }\n};\n\n\n//# sourceURL=webpack://my-webpack-project/./src/card.ts?");
 
 /***/ }),
 
@@ -30,13 +30,23 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexpo
 
 /***/ }),
 
+/***/ "./src/dom.ts":
+/*!********************!*\
+  !*** ./src/dom.ts ***!
+  \********************/
+/***/ ((__unused_webpack_module, exports) => {
+
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nfunction isDomAvailable() {\n    try {\n        return document && 1;\n    }\n    catch (err) {\n        return false;\n    }\n}\nexports.Dom = class Dom {\n    static createElement(...args) {\n        if (isDomAvailable()) {\n            console.log(\"dom createElement with args\", args);\n            return document.createElement(args[0], args[1]);\n        }\n    }\n    static getElementsByTagName(tagName) {\n        if (isDomAvailable()) {\n            console.log(\"dom getElementsByTagName with args\", tagName);\n            return document.getElementsByTagName(tagName);\n        }\n    }\n    static getElementById(id) {\n        if (isDomAvailable()) {\n            console.log(\"dom getElementById with args\", id);\n            return document.getElementById(id);\n        }\n    }\n};\n\n\n//# sourceURL=webpack://my-webpack-project/./src/dom.ts?");
+
+/***/ }),
+
 /***/ "./src/index.ts":
 /*!**********************!*\
   !*** ./src/index.ts ***!
   \**********************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst { log } = __webpack_require__(/*! ./logger.ts */ \"./src/logger.ts\");\nconst { Card } = __webpack_require__(/*! ./card.ts */ \"./src/card.ts\");\nconst { constants } = __webpack_require__(/*! ./constants.ts */ \"./src/constants.ts\");\nlog(\"Hello World!\");\nlog('hehehe15');\ndocument.getElementsByTagName(\"body\")[0].innerHTML = \"<div id='game'></div>\";\nlet cards = [];\nfor (let seed of constants.SEEDS) {\n    for (let value of constants.VALUES) {\n        cards.push(new Card(seed, value));\n    }\n}\nfor (let card of cards) {\n    let cardDiv = document.createElement(\"div\");\n    cardDiv.classList.add(\"card\");\n    cardDiv.classList.add(card.getColor());\n    cardDiv.innerHTML = card.getCard();\n    cardDiv.addEventListener(\"click\", () => console.log(card));\n    document.getElementById(\"game\").appendChild(cardDiv);\n}\n\n\n//# sourceURL=webpack://my-webpack-project/./src/index.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst { log } = __webpack_require__(/*! ./logger.ts */ \"./src/logger.ts\");\nconst { Card } = __webpack_require__(/*! ./card.ts */ \"./src/card.ts\");\nconst { Stack } = __webpack_require__(/*! ./stack.ts */ \"./src/stack.ts\");\nconst { constants } = __webpack_require__(/*! ./constants.ts */ \"./src/constants.ts\");\nconst { Dom } = __webpack_require__(/*! ./dom */ \"./src/dom.ts\");\nlog(\"Hello World!\");\nDom.getElementsByTagName(\"body\")[0].innerHTML = \"<div id='game'></div>\";\nlet cards = [];\nlet i = 0;\nlet currStack = new Stack();\nlet stacks = [currStack];\nfor (let seed of constants.SEEDS) {\n    for (let value of constants.VALUES) {\n        let newCard = new Card(seed, value);\n        cards.push(newCard);\n        i++;\n        currStack.stackTopCard(newCard);\n        if (i == 3) {\n            i = 0;\n            currStack = new Stack();\n            stacks.push(currStack);\n        }\n    }\n}\nfor (let stack of stacks) {\n    console.log(stack);\n    Dom.getElementById(\"game\").appendChild(stack.getDomElement());\n}\n\n\n//# sourceURL=webpack://my-webpack-project/./src/index.ts?");
 
 /***/ }),
 
@@ -47,6 +57,16 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\ncons
 /***/ ((__unused_webpack_module, exports) => {
 
 eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nfunction log(msg, ...args) {\n    console.log(msg, args);\n    return 3;\n}\nexports.log = log;\n\n\n//# sourceURL=webpack://my-webpack-project/./src/logger.ts?");
+
+/***/ }),
+
+/***/ "./src/stack.ts":
+/*!**********************!*\
+  !*** ./src/stack.ts ***!
+  \**********************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+eval("\nvar _a;\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nconst { Card } = __webpack_require__(/*! ./card.ts */ \"./src/card.ts\");\nconst { Dom } = __webpack_require__(/*! ./dom */ \"./src/dom.ts\");\nexports.Stack = (_a = class Stack {\n        constructor(cards = []) {\n            this.cards = [];\n            if (cards.length > _a.STACK_LIMIT) {\n                throw new Error(\"too many cards!\");\n            }\n            cards.forEach((card) => this.cards.push(card));\n            this.setupDomElement();\n        }\n        peekTopCard() {\n            return this.cards[this.cards.length - 1];\n        }\n        removeTopCard() {\n            const card = this.cards.pop();\n            this.populateDomChildren();\n            return card;\n        }\n        stackTopCard(card) {\n            if (this.cards.length == _a.STACK_LIMIT) {\n                throw new Error(\"too many cards!\");\n            }\n            this.cards.push(card);\n            this.populateDomChildren();\n        }\n        size() {\n            return this.cards.length;\n        }\n        getDomElement() {\n            return this.domElement;\n        }\n        setupDomElement() {\n            if (!this.domElement) {\n                this.domElement = Dom.createElement(\"div\");\n            }\n            if (this.domElement) {\n                this.domElement.classList.add(\"stack\");\n                this.domElement.addEventListener(\"click\", () => console.log(this));\n                this.populateDomChildren();\n            }\n        }\n        populateDomChildren() {\n            if (this.domElement) {\n                this.domElement.replaceChildren();\n                for (let card of this.cards) {\n                    this.domElement.appendChild(card.getDomElement());\n                }\n            }\n        }\n    },\n    _a.STACK_LIMIT = 3,\n    _a);\n\n\n//# sourceURL=webpack://my-webpack-project/./src/stack.ts?");
 
 /***/ })
 
@@ -70,7 +90,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nfunc
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
