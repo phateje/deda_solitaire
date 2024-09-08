@@ -26,8 +26,10 @@ for (let seed of constants.SEEDS) {
   }
 }
 
+const gameContainer = Dom.getElementById("game");
+gameContainer.addEventListener("cardClick", (event: any) => {
+  console.log("cardClick", event)
+})
 for (let stack of stacks) {
-  console.log(stack);
-
-  Dom.getElementById("game").appendChild(stack.getDomElement());
+  gameContainer.appendChild(stack.getDomElement());
 }

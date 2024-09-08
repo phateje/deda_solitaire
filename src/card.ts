@@ -39,14 +39,14 @@ exports.Card = class Card {
       this.domElement.classList.add("card");
       this.domElement.classList.add(this.getColor());
       this.domElement.innerHTML = this.getCard();
-      this.domElement.addEventListener("click", () => console.log(this));
+      this.domElement.addEventListener("click", () => {
+        this.domElement.dispatchEvent(new CustomEvent("cardClick", { bubbles: true, detail: this }))
+      });
       this.domElement.addEventListener("mouseover", (event: any) => {
         event.target.style.backgroundColor = "#aaa";
-        console.log(event.target.style);
       });
       this.domElement.addEventListener("mouseleave", (event: any) => {
         event.target.style.backgroundColor = "";
-        console.log(event.target.style);
       });
     }
   }
