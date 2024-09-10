@@ -6,7 +6,7 @@ const { Dom } = require("./dom");
 
 log("Hello World!");
 
-Dom.getElementsByTagName("body")[0].innerHTML = "<div id='game'></div>";
+Dom.getElementsByTagName("body")[0].innerHTML = "<div id='game'><div id='overlay'></div></div>";
 
 let cards = [];
 let i = 0;
@@ -26,9 +26,28 @@ for (let seed of constants.SEEDS) {
   }
 }
 
+
 const gameContainer = Dom.getElementById("game");
-gameContainer.addEventListener("cardClick", (event: any) => {
-  console.log("cardClick", event)
+let selectedCard: any;
+gameContainer.addEventListener("mousemove", (event: any) => {
+  if (selectedCard) {
+    selectedCard.style.top = (event.clientY + 20) + "px"
+    selectedCard.style.left = (event.clientX + 90) + "px"
+  }
+})
+gameContainer.addEventListener("stackClick", (event: any) => {
+  console.log("stackClick", event)
+  const { stack, card } = event.detail;
+  if (card == stack.peekTopCard()) {
+    stack.removeTopCard();
+    const cardDomElement = card.getDomElement();
+    console.log("heyo", cardDomElement);
+    cardDomElement.style.position = "fixed";
+    selectedCard = cardDomElement;
+    selectedCard.style.position = "fixed";
+    gameContainer.appendChild(cardDomElement);
+  }
+
 })
 for (let stack of stacks) {
   gameContainer.appendChild(stack.getDomElement());

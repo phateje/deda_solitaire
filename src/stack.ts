@@ -46,7 +46,16 @@ exports.Stack = class Stack {
     }
     if (this.domElement) {
       this.domElement.classList.add("stack");
-      this.domElement.addEventListener("click", () => console.log(this));
+      this.domElement.addEventListener("cardClick", (event: any) => {
+        event.stopPropagation();
+        this.domElement.dispatchEvent(new CustomEvent("stackClick", {
+          bubbles: true,
+          detail: {
+            card: event.detail,
+            stack: this
+          }
+        }))
+      })
       this.populateDomChildren();
     }
   }
