@@ -39,8 +39,10 @@ exports.Card = class Card {
       this.domElement.classList.add("card");
       this.domElement.classList.add(this.getColor());
       this.domElement.innerHTML = this.getCard();
-      this.domElement.addEventListener("click", () => {
-        this.domElement.dispatchEvent(new CustomEvent("cardClick", { bubbles: true, detail: this }))
+      this.domElement.addEventListener("click", (event: any) => {
+        this.domElement.dispatchEvent(
+          new CustomEvent("cardClick", { bubbles: true, detail: { card: this, clickEvent: event } })
+        );
       });
       this.domElement.addEventListener("mouseover", (event: any) => {
         event.target.style.backgroundColor = "#aaa";

@@ -26,29 +26,29 @@ for (let seed of constants.SEEDS) {
   }
 }
 
+let selectedCard: any;
+function setCardPosition(event: { clientX: number; clientY: number }) {
+  if (selectedCard) {
+    selectedCard.style.top = event.clientY + 20 + "px";
+    selectedCard.style.left = event.clientX + 90 + "px";
+  }
+}
 
 const gameContainer = Dom.getElementById("game");
-let selectedCard: any;
 gameContainer.addEventListener("mousemove", (event: any) => {
-  if (selectedCard) {
-    selectedCard.style.top = (event.clientY + 20) + "px"
-    selectedCard.style.left = (event.clientX + 90) + "px"
-  }
-})
+  setCardPosition(event);
+});
 gameContainer.addEventListener("stackClick", (event: any) => {
-  console.log("stackClick", event)
-  const { stack, card } = event.detail;
+  const { stack, card, clickEvent } = event.detail;
   if (card == stack.peekTopCard()) {
     stack.removeTopCard();
     const cardDomElement = card.getDomElement();
-    console.log("heyo", cardDomElement);
-    cardDomElement.style.position = "fixed";
     selectedCard = cardDomElement;
     selectedCard.style.position = "fixed";
+    setCardPosition(clickEvent);
     gameContainer.appendChild(cardDomElement);
   }
-
-})
+});
 for (let stack of stacks) {
   gameContainer.appendChild(stack.getDomElement());
 }
