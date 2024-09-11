@@ -1,6 +1,7 @@
 const { log } = require("./logger.ts");
 const { Card } = require("./card.ts");
 const { Stack } = require("./stack.ts");
+const { CardMoveHandler } = require("./cardMoveHandler.ts");
 const { constants } = require("./constants.ts");
 const { Dom } = require("./dom");
 
@@ -26,41 +27,10 @@ for (let seed of constants.SEEDS) {
     }
   }
 }
-
-const cardMoveHandler = (function () {
-  let selectedCard: any | undefined;
-  const handlers: any = {};
-
-  function setCardPosition(event: { clientX: number; clientY: number }) {
-    if (selectedCard) {
-      selectedCard.style.top = event.clientY + 20 + "px";
-      selectedCard.style.left = event.clientX + 90 + "px";
-    }
-  }
-
-  handlers.mousemove = function (event: any) {
-    setCardPosition(event);
-  };
-
-  handlers.stackClick = function (event: any) {
-    const { stack, card, clickEvent } = event.detail;
-    if (card == stack.peekTopCard()) {
-      stack.removeTopCard();
-      const cardDomElement = card.getDomElement();
-      selectedCard = cardDomElement;
-      selectedCard.style.position = "fixed";
-      setCardPosition(clickEvent);
-      gameContainer.appendChild(cardDomElement);
-    }
-  };
-
-  return (event: any) => {
-    return handlers[event.type](event);
-  };
-})();
-
-gameContainer.addEventListener("mousemove", cardMoveHandler);
-gameContainer.addEventListener("stackClick", cardMoveHandler);
 for (let stack of stacks) {
   gameContainer.appendChild(stack.getDomElement());
 }
+
+const cardMoveHandlers = new CardMoveHandler(gameContainer).getHandlers();
+gameContainer.addEventListener("mousemove", cardMoveHandlers);
+gameContainer.addEventListener("stackClick", cardMoveHandlers);
