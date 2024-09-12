@@ -12,8 +12,9 @@ exports.CardMoveHandler = class CardMoveHandler {
 
   private setCardPosition(event: { clientX: number; clientY: number }) {
     if (this.selectedCard) {
-      this.selectedCard.getDomElement().style.top = event.clientY + 20 + "px";
-      this.selectedCard.getDomElement().style.left = event.clientX + 90 + "px";
+      const domElement = this.selectedCard.getDomElement();
+      domElement.style.top = event.clientY + 10 + "px";
+      domElement.style.left = (event.clientX + domElement.getBoundingClientRect().width - domElement.style.marginLeft) + "px";
     }
   }
 
