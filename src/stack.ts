@@ -46,6 +46,7 @@ exports.Stack = class Stack {
     }
     if (this.domElement) {
       this.domElement.classList.add("stack");
+      // need a new listener for clicking on an empty stack when it's the source stack
       this.domElement.addEventListener("cardClick", (event: any) => {
         event.stopPropagation();
         this.domElement.dispatchEvent(
