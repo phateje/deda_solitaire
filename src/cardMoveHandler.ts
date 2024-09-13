@@ -14,7 +14,8 @@ exports.CardMoveHandler = class CardMoveHandler {
     if (this.selectedCard) {
       const domElement = this.selectedCard.getDomElement();
       domElement.style.top = event.clientY + 10 + "px";
-      domElement.style.left = (event.clientX + domElement.getBoundingClientRect().width - domElement.style.marginLeft) + "px";
+      domElement.style.left =
+        event.clientX + domElement.getBoundingClientRect().width - domElement.style.marginLeft + "px";
     }
   }
 
@@ -24,18 +25,9 @@ exports.CardMoveHandler = class CardMoveHandler {
 
   private stackClick(event: any) {
     const { stack, card, clickEvent } = event.detail;
-
     const isNewClick = card == stack.peekTopCard() && !this.selectedCard;
     const isClickOnDestinationStack = this.selectedCard && stack.size() < 3;
 
-    console.log("so what's going on here", {
-      stack,
-      card,
-      selectedCard: this.selectedCard,
-      sourceStack: this.sourceStack,
-      isNewClick,
-      isClickOnDestinationStack,
-    });
     if (isNewClick) {
       this.selectNewCard(card, stack, clickEvent);
     } else if (isClickOnDestinationStack) {

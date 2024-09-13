@@ -5,7 +5,6 @@ exports.Stack = class Stack {
   private cards: Array<typeof Card> = [];
   private static readonly STACK_LIMIT: number = 3;
   private domElement: any;
-  private emptyStackClickHandler;
 
   constructor(cards: Array<typeof Card> = []) {
     if (cards.length > Stack.STACK_LIMIT) {
@@ -13,20 +12,6 @@ exports.Stack = class Stack {
     }
     cards.forEach((card) => this.cards.push(card));
     this.setupDomElement();
-    this.emptyStackClickHandler = function (event: any) {
-      console.log('click on stack event', event)
-      event.stopPropagation();
-      this.domElement.dispatchEvent(
-        new CustomEvent("stackClick", {
-          bubbles: true,
-          detail: {
-            clickEvent: event,
-            stack: this,
-          },
-        })
-      );
-    }
-    this.emptyStackClickHandler.bind(this);
   }
 
   public peekTopCard(): typeof Card {
@@ -36,7 +21,6 @@ exports.Stack = class Stack {
   public removeTopCard(): typeof Card {
     const card = this.cards.pop();
     this.populateDomChildren();
-    this.setEmptyStackClickHandler();
     return card;
   }
 
@@ -46,8 +30,6 @@ exports.Stack = class Stack {
     }
     this.cards.push(card);
     this.populateDomChildren();
-    this.setEmptyStackClickHandler();
-
   }
 
   public size(): number {
@@ -64,9 +46,7 @@ exports.Stack = class Stack {
     }
     if (this.domElement) {
       this.domElement.classList.add("stack");
-      this.setEmptyStackClickHandler();
       this.domElement.addEventListener("cardClick", (event: any) => {
-        console.log('card click on stack', event.detail.clickEvent)
         event.stopPropagation();
         this.domElement.dispatchEvent(
           new CustomEvent("stackClick", {
@@ -79,16 +59,24 @@ exports.Stack = class Stack {
           })
         );
       });
+      this.domElement.addEventListener("click", (event: any) => {
+        if (event.target.className.includes("card")) {
+          event.stopPropagation();
+          return;
+        }
+        event.stopPropagation();
+        this.domElement.dispatchEvent(
+          new CustomEvent("stackClick", {
+            bubbles: true,
+            detail: {
+              clickEvent: event,
+              stack: this,
+            },
+          })
+        );
+      });
 
       this.populateDomChildren();
-    }
-  }
-
-  private setEmptyStackClickHandler() {
-    if (this.size() == 0) {
-      this.domElement.addEventListener("click", this.emptyStackClickHandler);
-    } else {
-      this.domElement.removeEventListener("click", this.emptyStackClickHandler);
     }
   }
 
