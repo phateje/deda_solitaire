@@ -60,6 +60,7 @@ exports.Stack = class Stack {
         );
       });
       this.domElement.addEventListener("click", (event: any) => {
+        // handle click on empty stack to return card from source to it
         if (event.target != this.domElement) {
           event.stopPropagation();
           return;

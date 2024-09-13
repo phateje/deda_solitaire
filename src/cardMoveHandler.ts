@@ -27,6 +27,7 @@ exports.CardMoveHandler = class CardMoveHandler {
     const { stack, card, clickEvent } = event.detail;
     const isNewClick = card == stack.peekTopCard() && !this.selectedCard;
     const isClickOnDestinationStack = this.selectedCard && stack.size() < 3;
+    // todo moving card to empty stack that's not the source stack is not allowed
 
     if (isNewClick) {
       this.selectNewCard(card, stack, clickEvent);
