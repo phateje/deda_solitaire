@@ -60,7 +60,7 @@ exports.Stack = class Stack {
         );
       });
       this.domElement.addEventListener("click", (event: any) => {
-        if (event.target.className.includes("card")) {
+        if (event.target != this.domElement) {
           event.stopPropagation();
           return;
         }
