@@ -21,7 +21,9 @@ exports.GoalStack = class GoalStack extends Stack {
     }
   }
 
-  public handleCardClick(event: any) {
+  private handleCardClick(event: any) {
+    console.log("goal card click ");
+
     const card = event.detail.card;
     if (this.size() > 0) {
       const topCard = this.peekTopCard();
@@ -37,7 +39,9 @@ exports.GoalStack = class GoalStack extends Stack {
     }
   }
 
-  public handleStackClick(event: any) {
+  private handleStackClick(event: any) {
+    console.log("goal stack click");
+
     this.emitStackClick();
   }
 
