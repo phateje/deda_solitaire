@@ -5,6 +5,7 @@ exports.GoalStack = class GoalStack extends Stack {
   constructor() {
     super([]);
     this.STACK_LIMIT = 13;
+    console.log("goalstack", this);
   }
 
   public stackTopCard(card: typeof Card) {

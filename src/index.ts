@@ -28,6 +28,7 @@ for (let seed of constants.SEEDS) {
     }
   }
 }
+stacks.push(new Stack());
 for (let stack of stacks) {
   gameContainer.appendChild(stack.getDomElement());
 }

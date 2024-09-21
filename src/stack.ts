@@ -12,6 +12,7 @@ exports.Stack = class Stack {
     }
     cards.forEach((card) => this.cards.push(card));
     this.setupDomElement();
+    console.log("stack", this);
   }
 
   public peekTopCard(): typeof Card {
