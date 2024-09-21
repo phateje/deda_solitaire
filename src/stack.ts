@@ -2,12 +2,12 @@ const { Card } = require("./card.ts");
 const { Dom } = require("./dom");
 
 exports.Stack = class Stack {
+  protected STACK_LIMIT: number = 3;
   private cards: Array<typeof Card> = [];
-  private static readonly STACK_LIMIT: number = 3;
   private domElement: any;
 
   constructor(cards: Array<typeof Card> = []) {
-    if (cards.length > Stack.STACK_LIMIT) {
+    if (cards.length > this.STACK_LIMIT) {
       throw new Error("too many cards!");
     }
     cards.forEach((card) => this.cards.push(card));
@@ -25,7 +25,7 @@ exports.Stack = class Stack {
   }
 
   public stackTopCard(card: typeof Card) {
-    if (this.cards.length == Stack.STACK_LIMIT) {
+    if (this.cards.length == this.STACK_LIMIT) {
       throw new Error("too many cards!");
     }
     this.cards.push(card);
@@ -44,41 +44,14 @@ exports.Stack = class Stack {
     if (!this.domElement) {
       this.domElement = Dom.createElement("div");
     }
-    if (this.domElement) {
-      this.domElement.classList.add("stack");
-      this.domElement.addEventListener("cardClick", (event: any) => {
-        event.stopPropagation();
-        this.domElement.dispatchEvent(
-          new CustomEvent("stackClick", {
-            bubbles: true,
-            detail: {
-              card: event.detail.card,
-              clickEvent: event.detail.clickEvent,
-              stack: this,
-            },
-          })
-        );
-      });
-      this.domElement.addEventListener("click", (event: any) => {
-        // handle click on empty stack to return card from source to it
-        if (event.target != this.domElement) {
-          event.stopPropagation();
-          return;
-        }
-        event.stopPropagation();
-        this.domElement.dispatchEvent(
-          new CustomEvent("stackClick", {
-            bubbles: true,
-            detail: {
-              clickEvent: event,
-              stack: this,
-            },
-          })
-        );
-      });
-
-      this.populateDomChildren();
+    if (!this.domElement) {
+      return;
     }
+    this.domElement.classList.add("stack");
+    this.domElement.addEventListener("cardClick", this.handleCardClick.bind(this));
+    this.domElement.addEventListener("click", this.handleStackClick.bind(this));
+
+    this.populateDomChildren();
   }
 
   private populateDomChildren() {
@@ -88,5 +61,37 @@ exports.Stack = class Stack {
         this.domElement.appendChild(card.getDomElement());
       }
     }
+  }
+
+  private handleCardClick(event: CustomEvent) {
+    event.stopPropagation();
+    this.domElement.dispatchEvent(
+      new CustomEvent("stackClick", {
+        bubbles: true,
+        detail: {
+          card: event.detail.card,
+          clickEvent: event.detail.clickEvent,
+          stack: this,
+        },
+      })
+    );
+  }
+
+  private handleStackClick(event: MouseEvent) {
+    // handle click on empty stack to return card from source to it
+    if (event.target !== this.domElement) {
+      event.stopPropagation();
+      return;
+    }
+    event.stopPropagation();
+    this.domElement.dispatchEvent(
+      new CustomEvent("stackClick", {
+        bubbles: true,
+        detail: {
+          clickEvent: event,
+          stack: this,
+        },
+      })
+    );
   }
 };

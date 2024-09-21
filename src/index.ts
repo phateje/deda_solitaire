@@ -31,6 +31,5 @@ for (let stack of stacks) {
   gameContainer.appendChild(stack.getDomElement());
 }
 
-const cardMoveHandlers = new CardMoveHandler(gameContainer).getHandlers();
-gameContainer.addEventListener("mousemove", cardMoveHandlers);
-gameContainer.addEventListener("stackClick", cardMoveHandlers);
+// sets moving handlers + logic on the dom object
+new CardMoveHandler(gameContainer);

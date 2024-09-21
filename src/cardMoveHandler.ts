@@ -8,14 +8,10 @@ exports.CardMoveHandler = class CardMoveHandler {
 
   constructor(gameContainer: HTMLDivElement) {
     this.gameContainer = gameContainer;
-  }
-
-  private setCardPosition(event: { clientX: number; clientY: number }) {
-    if (this.selectedCard) {
-      const domElement = this.selectedCard.getDomElement();
-      domElement.style.top = event.clientY + 10 + "px";
-      domElement.style.left =
-        event.clientX + domElement.getBoundingClientRect().width - domElement.style.marginLeft + "px";
+    const self = this;
+    if (gameContainer) {
+      gameContainer.addEventListener("mousemove", self.mousemove.bind(self));
+      gameContainer.addEventListener("stackClick", self.stackClick.bind(self));
     }
   }
 
@@ -54,14 +50,12 @@ exports.CardMoveHandler = class CardMoveHandler {
     this.selectedCard = undefined;
   }
 
-  public getHandlers() {
-    const self = this;
-    return function (event: any) {
-      if (event.type === "mousemove") {
-        return self.mousemove(event);
-      } else if (event.type === "stackClick") {
-        return self.stackClick(event);
-      }
-    };
+  private setCardPosition(event: { clientX: number; clientY: number }) {
+    if (this.selectedCard) {
+      const domElement = this.selectedCard.getDomElement();
+      domElement.style.top = event.clientY + 10 + "px";
+      domElement.style.left =
+        event.clientX + domElement.getBoundingClientRect().width - domElement.style.marginLeft + "px";
+    }
   }
 };

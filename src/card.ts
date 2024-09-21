@@ -20,6 +20,21 @@ exports.Card = class Card {
     return this.value; // could cast to number?
   }
 
+  public getIntValue(): number {
+    switch (this.value) {
+      case "A":
+        return 1;
+      case "J":
+        return 11;
+      case "Q":
+        return 12;
+      case "K":
+        return 13;
+      default:
+        return parseInt(this.value);
+    }
+  }
+
   public getSeed(): string {
     return this.seed;
   }
