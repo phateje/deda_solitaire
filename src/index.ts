@@ -1,6 +1,7 @@
 const { log } = require("./logger.ts");
 const { Card } = require("./card.ts");
 const { Stack } = require("./stack.ts");
+const { GoalStack } = require("./goalStack.ts");
 const { CardMoveHandler } = require("./cardMoveHandler.ts");
 const { constants } = require("./constants.ts");
 const { Dom } = require("./dom");
@@ -13,7 +14,7 @@ const gameContainer = Dom.getElementById("game");
 let cards = [];
 let i = 0;
 let currStack = new Stack();
-let stacks = [currStack];
+let stacks = [new GoalStack(), new GoalStack(), new GoalStack(), new GoalStack(), currStack];
 for (let seed of constants.SEEDS) {
   for (let value of constants.VALUES) {
     let newCard = new Card(seed, value);

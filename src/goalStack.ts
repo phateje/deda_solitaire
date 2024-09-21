@@ -43,4 +43,11 @@ exports.GoalStack = class GoalStack extends Stack {
   public emitStackClick() {
     this.getDomElement().dispatchEvent(new CustomEvent("stackClick", { detail: { stack: this } }));
   }
+
+  protected setupDomElement() {
+    super.setupDomElement();
+    if (this.domElement) {
+      this.domElement.classList.add("goalStack");
+    }
+  }
 };

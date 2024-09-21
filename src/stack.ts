@@ -40,7 +40,7 @@ exports.Stack = class Stack {
     return this.domElement;
   }
 
-  private setupDomElement() {
+  protected setupDomElement() {
     if (!this.domElement) {
       this.domElement = Dom.createElement("div");
     }
@@ -64,6 +64,7 @@ exports.Stack = class Stack {
   }
 
   private handleCardClick(event: CustomEvent) {
+    console.log("card click");
     event.stopPropagation();
     this.domElement.dispatchEvent(
       new CustomEvent("stackClick", {
@@ -78,6 +79,7 @@ exports.Stack = class Stack {
   }
 
   private handleStackClick(event: MouseEvent) {
+    console.log("stack click");
     // handle click on empty stack to return card from source to it
     if (event.target !== this.domElement) {
       event.stopPropagation();
