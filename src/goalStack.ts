@@ -21,32 +21,38 @@ exports.GoalStack = class GoalStack extends Stack {
     }
   }
 
-  private handleCardClick(event: any) {
-    console.log("goal card click ");
-
+  protected handleCardClick(event: CustomEvent) {
     const card = event.detail.card;
     if (this.size() > 0) {
       const topCard = this.peekTopCard();
       if (topCard.getIntValue() + 1 == card.getIntValue() && topCard.getSeed() == card.getSeed()) {
         this.stackTopCard(card);
-        this.emitStackClick();
+        this.emitStackClick({ event, card });
       }
     } else {
       if (card.getRank() == 1) {
         this.stackTopCard(card);
-        this.emitStackClick();
+        this.emitStackClick({ event, card });
       }
     }
   }
 
-  private handleStackClick(event: any) {
-    console.log("goal stack click");
-
-    this.emitStackClick();
+  protected handleStackClick(event: MouseEvent) {
+    this.emitStackClick({ event, card: undefined });
   }
 
-  public emitStackClick() {
-    this.getDomElement().dispatchEvent(new CustomEvent("stackClick", { detail: { stack: this } }));
+  public emitStackClick(args: { event: any | null; card: typeof Card | null } = { event: undefined, card: undefined }) {
+    const { event, card } = args;
+    this.domElement.dispatchEvent(
+      new CustomEvent("stackClick", {
+        bubbles: true,
+        detail: {
+          clickEvent: event,
+          stack: this,
+          card: card,
+        },
+      })
+    );
   }
 
   protected setupDomElement() {

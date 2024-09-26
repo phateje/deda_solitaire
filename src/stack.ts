@@ -26,6 +26,7 @@ exports.Stack = class Stack {
   }
 
   public stackTopCard(card: typeof Card) {
+    console.log("stacking on super?");
     if (this.cards.length == this.STACK_LIMIT) {
       throw new Error("too many cards!");
     }
@@ -64,8 +65,7 @@ exports.Stack = class Stack {
     }
   }
 
-  private handleCardClick(event: CustomEvent) {
-    console.log("card click");
+  protected handleCardClick(event: CustomEvent) {
     event.stopPropagation();
     this.domElement.dispatchEvent(
       new CustomEvent("stackClick", {
@@ -74,13 +74,13 @@ exports.Stack = class Stack {
           card: event.detail.card,
           clickEvent: event.detail.clickEvent,
           stack: this,
+          isGoalStack: true,
         },
       })
     );
   }
 
-  private handleStackClick(event: MouseEvent) {
-    console.log("stack click");
+  protected handleStackClick(event: MouseEvent) {
     // handle click on empty stack to return card from source to it
     if (event.target !== this.domElement) {
       event.stopPropagation();
@@ -93,6 +93,7 @@ exports.Stack = class Stack {
         detail: {
           clickEvent: event,
           stack: this,
+          isGoalStack: true,
         },
       })
     );
