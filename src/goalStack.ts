@@ -1,7 +1,10 @@
 const { Stack } = require("./stack.ts");
 const { Card } = require("./card.ts");
+const { constants } = require("./constants.ts");
 
 exports.GoalStack = class GoalStack extends Stack {
+  private stackType = constants.CLICK_TYPES.GOAL_STACK;
+
   constructor() {
     super([]);
     this.STACK_LIMIT = 13;

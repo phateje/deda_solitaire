@@ -1,10 +1,12 @@
 const { Card } = require("./card.ts");
 const { Dom } = require("./dom");
+const { constants } = require("./constants.ts");
 
 exports.Stack = class Stack {
   protected STACK_LIMIT: number = 3;
   private cards: Array<typeof Card> = [];
   private domElement: any;
+  private stackType = constants.CLICK_TYPES.STACK;
 
   constructor(cards: Array<typeof Card> = []) {
     if (cards.length > this.STACK_LIMIT) {
@@ -74,7 +76,7 @@ exports.Stack = class Stack {
           card: event.detail.card,
           clickEvent: event.detail.clickEvent,
           stack: this,
-          isGoalStack: true,
+          clickType: constants.CLICK_TYPES.CARD,
         },
       })
     );
@@ -93,7 +95,7 @@ exports.Stack = class Stack {
         detail: {
           clickEvent: event,
           stack: this,
-          isGoalStack: true,
+          clickType: this.stackType
         },
       })
     );

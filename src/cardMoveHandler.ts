@@ -22,31 +22,16 @@ exports.CardMoveHandler = class CardMoveHandler {
   private stackClick(event: any) {
     console.log("stack click", event);
     const { stack, card, clickEvent } = event.detail;
-    const isClickOnStack = clickEvent.target.className.includes("stack");
-    const isClickOnCard = clickEvent.target.className.includes("card");
-    const isClickOnGoalStack = clickEvent.target.className.includes("goalStack");
 
-    console.log(
-      clickEvent.target.className,
-      "stack",
-      isClickOnStack,
-      "card",
-      isClickOnCard,
-      "goalStack",
-      isClickOnGoalStack
-    );
-
-    const isNewClick = isClickOnCard && clickEvent.target == stack.peekTopCard().getDomElement() && !this.selectedCard;
-    const isClickOnDestinationStack = this.selectedCard && stack.size() < 3;
+    const isNewClick = false;
+    const isClickOnDestinationStack = false;
     // todo moving card to empty stack that's not the source stack is not allowed
 
-    console.log("isNewClick", isNewClick, "isClickOnDestinationStack", isClickOnDestinationStack);
-
-    if (isNewClick) {
-      this.selectNewCard(card, stack, clickEvent);
-    } else if (isClickOnDestinationStack) {
-      this.stackCardOn(stack);
-    }
+    // if (isNewClick) {
+    //   this.selectNewCard(card, stack, clickEvent);
+    // } else if (isClickOnDestinationStack) {
+    //   this.stackCardOn(stack);
+    // }
   }
 
   private selectNewCard(card: typeof Card, stack: typeof Stack, clickEvent: any) {
